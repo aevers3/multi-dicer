@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My first Vue app</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div id="app">
+            <h1 class="m-5 text-center">MultiDicer</h1>
+
+            <div>
+                <input v-model="diceCount" placeholder="Dice Count" type="number">
+                <span>{{ diceCount }} x d6</span>
+            </div>
+
+
+            <h3 class="mt-5">Passing Roll</h3>
+            <input type="range" min="1" max="6" step="1"  v-model="pass"> 
+            <input type="number" v-model="pass" />
+            <br>
+
+            <!-- <button v-on:click="logDiceCount">log</button> -->
+            <button v-on:click="rollDice" class="mt-4">Roll Dice</button>
+            <div class="row mt-5">
+                <div class="col-6">
+                    <h3>Scores</h3>
+                    <ul>
+                        <li v-for="rollScore in rollScores" :key="rollScores.index">
+                            {{rollScore}}
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-6">
+                    <h3>Passing Dice: {{passingDice}}</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                diceCount: "__",
+                pass: 1,
+                rollScores: [],
+                passingDice: "",
+                total: 0
+            },
+            methods: {
+                logDiceCount: function (diceCount) { console.log(this.pass) },
+                rollDice: function (diceCount) {
+                    this.rollScores = [];
+                    for (let i = 0; i < this.diceCount; i++) {
+                        // console.log(Math.floor(Math.random() * 6))
+                        this.rollScores.push(Math.floor(Math.random() * 6) + 1)
+                    }
+                    console.log(this.rollScores)
+                    this.checkPass(this.rollScores)
+                },
+                checkPass: function (rollScores) {
+                    for (let i = 0; i < rollScores.length; i++) {
+                        if (rollScores[i] >= this.pass) {
+                            this.passingDice++
+                        }
+                    }
+                    console.log("Passing: " + this.passingDice)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
